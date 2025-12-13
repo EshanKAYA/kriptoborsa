@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <title>Bulut Kripto Borsa</title>
+    <style>
+        body { background-color: #0b0e11; color: #eaecef; font-family: 'Arial', sans-serif; margin: 0; padding: 20px; }
+        .container { max-width: 900px; margin: 0 auto; }
+        h1 { text-align: center; color: #f0b90b; margin-bottom: 30px; }
+        
+        table { width: 100%; border-collapse: collapse; background-color: #1e2329; border-radius: 8px; overflow: hidden; }
+        th, td { padding: 15px; text-align: left; border-bottom: 1px solid #2b3139; }
+        th { background-color: #2b3139; color: #848e9c; font-size: 14px; }
+        
+        .coin-info { display: flex; align-items: center; font-weight: bold; }
+        .coin-info img { width: 30px; margin-right: 10px; }
+        .symbol { color: #848e9c; margin-left: 5px; font-size: 12px; }
+        
+        .price { font-family: 'Courier New', monospace; font-size: 16px; }
+        
+        .positive { color: #0ecb81; } /* Yeşil */
+        .negative { color: #f6465d; } /* Kırmızı */
+        
+        .btn-refresh {
+            display: block; width: 100%; padding: 15px; margin-top: 20px;
+            background-color: #f0b90b; color: #000; border: none; font-weight: bold;
+            font-size: 16px; border-radius: 5px; cursor: pointer;
+        }
+        .btn-refresh:hover { background-color: #d1a008; }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>🚀 Bulut Kripto Takipçisi</h1>
+        
+        <table>
+            <thead>
+                <tr>
+                    <th>Coin</th>
+                    <th>Fiyat (USD)</th>
+                    <th>24s Değişim</th>
+                    <th>Piyasa Değeri</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for coin in coinler %}
+                <tr>
+                    <td>
+                        <div class="coin-info">
+                            <img src="{{ coin.image }}" alt="{{ coin.name }}">
+                            {{ coin.name }} <span class="symbol">{{ coin.symbol.upper() }}</span>
+                        </div>
+                    </td>
+                    <td class="price">${{ coin.current_price }}</td>
+                    
+                    <td class="{{ 'positive' if coin.price_change_percentage_24h > 0 else 'negative' }}">
+                        {{ '▲' if coin.price_change_percentage_24h > 0 else '▼' }}
+                        %{{ coin.price_change_percentage_24h | round(2) }}
+                    </td>
+                    
+                    <td style="color: #848e9c;">${{ "{:,}".format(coin.market_cap) }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <form action="">
+            <button class="btn-refresh" onclick="window.location.reload();">🔄 Piyasayı Güncelle</button>
+        </form>
+    </div>
+
+</body>
+</html>
